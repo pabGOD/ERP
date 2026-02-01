@@ -1,0 +1,23 @@
+
+<main>
+    {{!FOrmuLariozinho oni-san}}
+    <div class="container">
+        <div class="row">
+            <div class="col-6 offset-3">
+                <form action="/cadastrar" method="post">
+                    <input type="text" name="nome" class="form-control" placeholder="Nome do Projeto">
+                    <input type="number" name="valor" class="form-control" placeholder="Valor do projeto">
+                    <select name="status" class="form-select mb-2">
+                        <option value="" selected disabled>Status do Projeto</option>
+                        <option value="planejamento">Planejamento</option>
+                        <option value="em_andamento">Em Andamento</option>
+                        <option value="concluido">Concluído</option>
+                        <option value="suspensa">Suspenso</option>
+                    </select>                    
+                    <input type="file" name="imagem" class="form-control">
+                    <input type="submit" value="Cadastrar" class="btn btn-primary mt-3">                    
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
