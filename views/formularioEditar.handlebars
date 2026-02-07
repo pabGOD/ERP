@@ -3,7 +3,8 @@
   <div class="container">
     <div class="row">
       <div class="col-6 offset-3">
-        <form action="/cadastrar" method="post" enctype="multipart/form-data">
+        <form action="/editar" method="post" enctype="multipart/form-data">
+        <input type="number" name="codigo">
           <input
             type="text"
             name="nome"
@@ -24,29 +25,10 @@
             <option value="suspensa">Suspenso</option>
           </select>
           <input type="file" name="imagem" class="form-control" />
-          <input type="submit" value="Cadastrar" class="btn btn-primary mt-3" />
+          <input type="submit" value="Alterar" class="btn btn-primary" />
+          <a href="/" class="btn btn-secondary">Cancelar</a>
         </form>
       </div>
     </div>
-  </div>
-  {{!Lista de produtos}}
-  <div class="container">
-    <div class="row">
-      {{#each produtos}}
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3">
-          <div class="card">
-            <img src="../imagens/{{imagem}}" />
-            <div class="textos">
-              <p>{{nome}}</p>
-              <p>R$ {{valor}}</p>
-            </div>
-            <a href="/formularioEditar/{{codigo}}" class="btn btn-warning">Alterar</a>
-            <a href="/remover/{{codigo}}&{{imagem}}" class="btn btn-danger">Remover</a>
-          </div>
-        </div>
-
-      {{/each}}
-    </div>
-  </div>
-
+  </div> 
 </main>

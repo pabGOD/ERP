@@ -109,5 +109,11 @@ app.get("/remover/:codigo&:imagem", (req, res) => {
   res.redirect("/");
 });
 
+// ROTA PARE REDIRECIONAR PARA O FOMULARDIO DE ALTERAÇÃO/EDIÇÃO
+app.get("/formularioEditar/:codigo", (req, res) => {
+  res.render("formularioEditar", { codigo: req.params.codigo });
+
+});
+
 // aqui vou abrir o servidor localhost blz?
 app.listen(3000);
