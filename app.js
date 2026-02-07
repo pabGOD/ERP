@@ -98,22 +98,26 @@ app.get("/remover/:codigo&:imagem", (req, res) => {
     // agora caso o comando sql funcione hehe baby
     fs.unlink(__dirname + "/imagens/" + req.params.imagem, (erro_imagem) => {
       console.log("falha ao remover a imagem");
-
-
-
-
     });
   });
 
-  //REDIRECIONAMENTO 
+  //REDIRECIONAMENTO
   res.redirect("/");
 });
 
 // ROTA PARE REDIRECIONAR PARA O FOMULARDIO DE ALTERAÇÃO/EDIÇÃO
 app.get("/formularioEditar/:codigo", (req, res) => {
-  res.render("formularioEditar", { codigo: req.params.codigo });
+  //SQL
+  let sql = `SELECT * FROM produtos WHERE codigo = ${req.params.codigo}`;
 
+  //EXECUTAR O COMANDO SQL
+  conexao.query(sql, function (erro, retorno) {
+    //caso FALHE O COMANDO SQL
+    if (erro) throw erro;
+
+    //CASO CONSIGA EXECUTAR O COMANDO SQL
+    res.render("formularioEditar", { produto: retorno[0] });
+  });
 });
-
 // aqui vou abrir o servidor localhost blz?
 app.listen(3000);
