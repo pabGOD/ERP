@@ -1,6 +1,9 @@
 // importei o modulo express ok?
 const express = require("express");
 
+// FILE SYSTEM (modulo NATIBVO do node para manipular arquivos)
+const fs = require("fs");
+
 // importar modulo fileupload (aquele modulo do express pra olhar imagens que foram uploads)
 const fileUpload = require("express-fileupload");
 
@@ -84,10 +87,27 @@ app.get("/", function (req, res) {
 
 //ROTA PARA REMOVER OS PRODUTOS
 app.get("/remover/:codigo&:imagem", (req, res) => {
-  console.log(req.params.codigo);
-  console.log(req.params.imagem);
-  res.end();
-})
+  //SQL
+  let sql = `DELETE FROM produtos WHERE codigo = ${req.params.codigo}`;
+
+  //EXECUTAR O COMANDO SQL
+  conexao.query(sql, function (erro, retorno) {
+    //caso FALHE O COMANDO SQL
+    if (erro) throw erro;
+
+    // agora caso o comando sql funcione hehe baby
+    fs.unlink(__dirname + "/imagens/" + req.params.imagem, (erro_imagem) => {
+      console.log("falha ao remover a imagem");
+
+
+
+
+    });
+  });
+
+  //REDIRECIONAMENTO 
+  res.redirect("/");
+});
 
 // aqui vou abrir o servidor localhost blz?
 app.listen(3000);
