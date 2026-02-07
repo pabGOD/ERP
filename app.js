@@ -119,5 +119,30 @@ app.get("/formularioEditar/:codigo", (req, res) => {
     res.render("formularioEditar", { produto: retorno[0] });
   });
 });
+
+
+// ROTA PARA EDITAR O PRODUTOS 
+app.post("/editar", (req, res) => {
+  // aqui vou obter os dados que serão utilizados para o cadastro ok?
+  let nome = req.body.nome;
+  let valor = req.body.valor;
+  let status = req.body.status;
+  let codigo = req.body.codigo;
+  let nomeImagem = req.body.nomeImagem;
+  let imagem = req.files.imagem.name;
+  //exibir os dados
+  console.log(nome);
+  console.log(valor);
+  console.log(status);
+  console.log(codigo);
+  console.log(nomeImagem);
+  console.log(imagem);
+
+  //FINALIZAR A ROTA
+  res.end();
+
+});
+
+
 // aqui vou abrir o servidor localhost blz?
 app.listen(3000);

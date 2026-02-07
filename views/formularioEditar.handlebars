@@ -6,7 +6,7 @@
         <form action="/editar" method="post" enctype="multipart/form-data">
           <img src="../imagens/{{produto.imagem}}">
 
-
+        <input type="hidden" name="nomeImagem" value="{{produto.imagem}}">
         <input type="hidden" name="codigo" value="{{produto.codigo}}">
           <input
             type="text"
