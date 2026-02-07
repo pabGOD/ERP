@@ -1,9 +1,8 @@
 // importei o modulo express ok?
 const express = require("express");
-const fileUpload = require("express-fileupload");
-const fs = require("fs");
-const path = require("path");
+
 // importar modulo fileupload (aquele modulo do express pra olhar imagens que foram uploads)
+const fileUpload = require("express-fileupload");
 
 //importei o express-handlebars
 const { engine } = require("express-handlebars");
@@ -22,6 +21,9 @@ app.use("bootstrap", express.static("./node_modules/bootstrap/dist"));
 
 // Adiconar o Css ok?
 app.use("/css", express.static("./css"));
+
+// Referenciar a pasta de imagens (colocar para aparecer na tela a imagem que foi cadastrada)
+app.use("/imagens", express.static("./imagens"));
 
 //Configuração do express-handlebars
 app.engine("handlebars", engine());
@@ -49,44 +51,43 @@ conexao.connect(function (erro) {
 
 // Rota principal
 app.get("/", function (req, res) {
-  res.render("formulario");
-});
+  // SQL para selecionar os produtos
+  let slq = "SELECT * FROM produtos";
+  // Executar o comando SQL
+  conexao.query(slq, function (erro, retorno) {
+    res.render("formulario", { produtos: retorno });
+  });
 
-function salvarImagem(imagem) {
-  const diretorio = path.join(__dirname, "imagens");
+  //Rota de Cadastro
+  app.post("/cadastrar", (req, res) => {
+    // aqui vou obter os dados que serão utilizados para o cadastro ok?
+    let nome = req.body.nome;
+    let valor = req.body.valor;
+    let status = req.body.status;
+    let imagem = req.files.imagem.name;
 
-  if (!fs.existsSync(diretorio)) {
-    fs.mkdirSync(diretorio, { recursive: true });
-  }
+    // estrutura SQL
+    let sql = `INSERT INTO produtos (nome, valor, status, imagem) VALUES ('${nome}', ${valor}, '${status}', '${imagem}')`;
 
-  const caminhoArquivo = path.join(diretorio, imagem.name);
+    //EXECUTAR COMANDO SQL
+    conexao.query(sql, function (erro, retorno) {
+      //CASO OCORRA ALGUM ERRO
+      if (erro) throw erro;
 
-  fs.writeFileSync(caminhoArquivo, imagem.data);
-}
-
-//Rota de Cadastro
-app.post("/cadastrar", (req, res) => {
-  // aqui vou obter os dados que serão utilizados para o cadastro ok?
-  let nome = req.body.nome;
-  let valor = req.body.valor;
-  let status = req.body.status;
-  let imagem = req.files.imagem.name;
-
-  // estrutura SQL
-  let sql = `INSERT INTO produtos (nome, valor, status, imagem) VALUES ('${nome}', ${valor}, '${status}', '${imagem}')`;
-
-  //EXECUTAR COMANDO SQL
-  conexao.query(sql, function (erro, retorno) {
-    //CASO OCORRA ALGUM ERRO
-    if (erro) throw erro;
-
-    // CASO OCORRA O CADASTRO
-
+      // CASO OCORRA O CADASTRO
+      req.files.imagem.mv(__dirname + "/imagens/" + req.files.imagem.name);
+    });
     //RETORNAR PARA A ROTA PRINCIPAL
-    salvarImagem(req.files.imagem);
     res.redirect("/");
   });
 });
+
+//ROTA PARA REMOVER OS PRODUTOS
+app.get("/remover/:codigo&:imagem", (req, res) => {
+  console.log(req.params.codigo);
+  console.log(req.params.imagem);
+  res.end();
+})
 
 // aqui vou abrir o servidor localhost blz?
 app.listen(3000);
